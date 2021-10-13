@@ -1,9 +1,10 @@
 monthly_analysis.xlsx
+data
 Case-Study-1.pdf
 R-BikeShareCaseStudy/*
 !R-BikeShareCaseStudy/Rscript.R
 !R-BikeShareCaseStudy/data
 !R-BikeShareCaseStudy/images
-data
+
 
 .Rproj.user
