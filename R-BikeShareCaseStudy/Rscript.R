@@ -205,38 +205,86 @@ all_trips_v2$day_of_week <- ordered(all_trips_v2$day_of_week, levels=c("Sunday",
 # Now, let's run the average ride time by each day for members vs casual users
 aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + all_trips_v2$day_of_week, FUN = mean)
 
-# analyze ridership data by type and weekday
-all_trips_v2 %>% 
-  group_by(member_casual, day_of_week) %>%  #groups by usertype and weekday
-  summarise(number_of_rides = n()                            #calculates the number of rides and average duration 
-            ,average_duration = mean(ride_length)) %>%         # calculates the average duration
-  arrange(member_casual, day_of_week)                                # sorts
+# Remove unused variables
+rm(all_trips)
 
-# Let's visualize the number of rides by rider type
-all_trips_v2 %>% 
-  group_by(member_casual, day_of_week) %>% 
+# creating table 1 for descriptive analysis of casual and annual members
+table1 <- all_trips_v2 %>%
+  group_by(member_casual, day_of_week) %>%
   summarise(number_of_rides = n()
-            ,average_duration = mean(ride_length)) %>% 
-  arrange(member_casual, day_of_week)  %>% 
-  ggplot(aes(x = day_of_week, y = number_of_rides, fill = member_casual)) +
-  geom_col(position = "dodge")
+            ,average_duration = mean(ride_length)/60
+            ,max_duration = max(ride_length)/60) %>%
+  arrange(member_casual, day_of_week)
 
-# Let's create a visualization for average duration
-all_trips_v2 %>% 
-  group_by(member_casual, day_of_week) %>% 
+# Inspect the data
+colnames(table1)
+str(table1)
+
+# package scales is required to format axis labels
+library(scales)
+
+# rides on each weekday for casual and annual members
+ggplot(table1) +
+  geom_col(position="dodge", mapping = aes(x=day_of_week, y=number_of_rides,
+                         fill = member_casual)) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  scale_x_discrete(name="Day of Week") +
+  scale_y_continuous(name="Number of Rides", labels=comma)
+
+ggsave("images/weeklyRides_bar.png", height=4,width=6.75)
+
+# rides share of casual and annual members on each weekday
+ggplot(table1) +
+  geom_col(mapping = aes(x=day_of_week, y=number_of_rides,
+                         fill = member_casual)) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  scale_x_discrete(name="Day of Week") +
+  scale_y_continuous(name="Number of Rides", labels=comma)
+
+ggsave("images/weeklyTotalRideShare_stacked.png", height=4,width=6.75)
+
+# average ride-length for casual and annual members on each weekday
+ggplot(table1) +
+  geom_col(mapping = aes(x=day_of_week, y=average_duration,
+                         fill = member_casual)) +
+  facet_wrap(~member_casual) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  scale_x_discrete(name="Day of Week") +
+  scale_y_continuous(name="Average Duration (Minutes)", labels=comma)
+
+ggsave("images/weeklyAverageRideDuration.png", height=4,width=6.75)
+
+
+# creating table 2 for monthly descriptive analysis of casual and annual member
+table2 <- all_trips_v2 %>%
+  group_by(year_month=as.factor(paste(year,month,sep='/')), member_casual) %>%
   summarise(number_of_rides = n()
-            ,average_duration = mean(ride_length)) %>% 
-  arrange(member_casual, day_of_week)  %>% 
-  ggplot(aes(x = day_of_week, y = average_duration, fill = member_casual)) +
-  geom_col(position = "dodge")
+            ,average_duration = mean(ride_length)/60
+            ,max_duration = max(ride_length)/60) %>%
+  arrange(year,month, member_casual)
 
-# Create a csv file that we will visualize in Excel, Tableau, or my presentation software
-counts <- aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + all_trips_v2$day_of_week, FUN = mean)
-write.csv(counts, file = 'C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy/data1.csv')
+# Inspect table2
+colnames(table2)
+str(table2)
 
+# rides in each month for casual and annual members
+ggplot(table2) +
+  geom_col(position="dodge", mapping=aes(x=year_month, y=number_of_rides,fill=member_casual)) +
+  theme(axis.text.x = element_text(size=7, angle=60, hjust=1)) +
+  scale_x_discrete(name="Year Month", ) +
+  scale_y_continuous(name="Ride Count", labels=comma)
 
+ggsave("images/MonthlyRides.png", height=4,width=6.75)
 
+# Average ride duration of casual and annual members per month month
+ggplot(table2) +
+  geom_col(position="dodge", mapping=aes(x=year_month, y=average_duration, fill=member_casual)) +
+  theme(axis.text.x = element_text(size=7, angle=60, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Average Ride Duration", labels=comma)
 
+ggsave(plot=last_plot(), "images/monthlyAverageDuration.png", height=4,width=6.75)
 
-
-
+# lets save the data in files
+write.csv(table1, file = 'C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy/data/weeklyRides.csv')
+write.csv(table2, file = 'C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy/data/monthlyRides.csv')
