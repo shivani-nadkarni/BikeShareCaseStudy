@@ -1,3 +1,6 @@
+# The analysis is done for the Ride data from May 2019 to April 2020
+
+# Install the required packages
 install.packages("tidyverse")
 install.packages("lubridate")
 install.packages("ggplot2")
@@ -23,7 +26,7 @@ q4_2019 <- read.csv(file="Divvy_Trips_2019_Q4.csv")
 #will clear all objects includes hidden objects.
 rm(list = ls())
 
-#free up memrory and report the memory usage.
+#free up memory and report the memory usage.
 gc()
 
 #To see what packages are installed
@@ -67,7 +70,6 @@ q4_2019 <- rename(q4_2019
                   ,end_station_name = to_station_name
                   ,end_station_id = to_station_id
                   ,member_casual = usertype)
-
 
 # view the column names now
 colnames(q2_2019)
@@ -158,6 +160,7 @@ all_trips$day_of_week <- format(as.Date(all_trips$started_at), "%A")
 colnames(all_trips)
 str(all_trips)
 
+# we can remove single columns this way
 all_trips <- select(all_trips, -"week")
 
 # Compute duration for each ride
@@ -231,6 +234,7 @@ ggplot(table1) +
   scale_x_discrete(name="Day of Week") +
   scale_y_continuous(name="Number of Rides", labels=comma)
 
+# save the image of the plot
 ggsave("images/weeklyRides_bar.png", height=4,width=6.75)
 
 # rides share of casual and annual members on each weekday
@@ -253,7 +257,6 @@ ggplot(table1) +
   scale_y_continuous(name="Average Duration (Minutes)", labels=comma)
 
 ggsave("images/weeklyAverageRideDuration.png", height=4,width=6.75)
-
 
 # creating table 2 for monthly descriptive analysis of casual and annual member
 table2 <- all_trips_v2 %>%
@@ -288,3 +291,105 @@ ggsave(plot=last_plot(), "images/monthlyAverageDuration.png", height=4,width=6.7
 # lets save the data in files
 write.csv(table1, file = 'C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy/data/weeklyRides.csv')
 write.csv(table2, file = 'C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy/data/monthlyRides.csv')
+
+# Now, I will use the data-set that contained ride-able type information
+# the data was analysed in SQL and a summary was exported in a csv file.
+# the above dataset belongs from September 2020 to August 2021. 
+
+# set your working directory
+setwd('C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study')
+
+# Let's import the csv file
+data <- read.csv("MonthlyRideableTypeData.csv", header=TRUE)
+
+# Inspect the data
+colnames(data)
+str(data)
+
+# Lets rename the columns properly
+data <- rename(data, year=ï..year)
+
+# combine year and month into single column
+install.packages("tidyr")
+library(tidyr)
+
+# create a new year-month column
+data <- unite(data, 'year_month', year, month, sep="/")
+
+# convert avg-ride-length to seconds
+data$avg_ride_length <- as.numeric(as.period(hms(data$avg_ride_length), unit="sec"))
+colnames(data)
+
+# set you working directory
+setwd('C:/Users/s.vijay.nadkarni/Trainings/data_analysis/case-study/R-BikeShareCaseStudy')
+
+# visualising preferred bikes by annual members across the year 
+# using stacked bar chart
+data %>%
+  filter(member_casual=="member") %>%
+  ggplot() +
+  geom_col(mapping = aes(x=year_month, y=count_members, fill=rideable_type)) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Ride count", labels=comma)
+
+ggsave("images/YearlyRideCountAnnual_stacked.png", height=3,width=6.75)
+
+# visualising preferred bikes by casual riders across the year 
+# using stacked bar chart
+data %>%
+  filter(member_casual=="casual") %>%
+  ggplot() +
+  geom_col(mapping = aes(x=year_month, y=count_members, fill=rideable_type)) +
+  theme(axis.text.x = element_text(angle=45, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Ride count", labels=comma)
+
+ggsave("images/YearlyRideCountCasual_stacked.png", height=3,width=6.75)
+
+# ride length pattern for annual riders across the year
+data %>%
+  filter(member_casual=="member") %>%
+  ggplot() +
+  geom_col(mapping = aes(x=year_month, y=avg_ride_length/60, fill=rideable_type)) +
+  facet_wrap(~rideable_type) +
+  theme(axis.text.x = element_text(angle=90, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Average ride duration (Minutes)")
+
+ggsave("images/YearlyRideCountAnnual.png", height=3,width=6.75)
+
+# ride length pattern for casual riders across the year
+data %>%
+  filter(member_casual=="casual") %>%
+  ggplot() +
+  geom_col(mapping = aes(x=year_month, y=avg_ride_length/60, fill=rideable_type)) +
+  facet_wrap(~rideable_type) +
+  theme(axis.text.x = element_text(angle=90, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Average ride duration (Minutes)")
+
+ggsave("images/YearlyRideCountCasual.png", height=3,width=6.75)
+
+# ride count pattern for annual and casual riders across the year
+data %>%
+  ggplot() +
+  geom_col(mapping = aes(x=year_month, y=count_members, fill=rideable_type)) +
+  facet_grid(rideable_type~member_casual) +
+  theme(axis.text.x = element_text(angle=90, hjust=1)) +
+  scale_x_discrete(name="Year Month",) +
+  scale_y_continuous(name="Ride Count", labels=comma)
+
+ggsave("images/YearlyBikeRides.png", height=10,width=6.75)
+
+# average ride duration for casual and annual riders 
+#with different bike types across the year
+data %>%
+  ggplot() +
+  geom_col(position="dodge", mapping = aes(x=year_month, y=avg_ride_length/60, fill=rideable_type)) +
+  facet_grid(rideable_type~member_casual) +
+  theme(axis.text.x = element_text(angle=90, hjust=1)) +
+  scale_x_discrete(name="Year Month") +
+  scale_y_continuous(name="Average ride duration (Minutes)", labels=comma)
+
+ggsave("images/YearlyAverageRideLength.png", height=8,width=6.75)
