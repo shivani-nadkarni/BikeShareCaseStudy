@@ -16,7 +16,7 @@ This project aims to analyse Bike Rides data for the last one year and to invest
 * R Studio
 
 ## Data Analysis Phases
-I've split the entire data analysis scope into 6 phases namely ASK, PREPARE, PROCESS, ANALYSE, SHARE and ACT. This file captures overview of each step. To view detailed report, be sure to check out [bikeShareCaseStudyReport.docx](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/BikeShareCaseStudy.docx).
+I've split the entire data analysis scope into 6 phases namely ASK, PREPARE, PROCESS, ANALYSE, SHARE and ACT. This file captures overview of each step. To view detailed report, be sure to check out [bikeShareCaseStudyReport.docx](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/caseStudyReport.docx).
 
 ### Ask
 The Business Goal that we need to solve – To Design  Marketing strategies to convert casual riders into annual members.
@@ -59,7 +59,7 @@ b)	Here numerical value 1 = Sunday and 7 = Saturday
 
 ### Analyse
 
-To Analyse the data, one of the best ways is to use Pivot tables. I created 5 pivot for each month. Following was the purpose of each table.
+To Analyse the data, one of the best ways is to use Pivot tables. I created 5 pivot for each month, you can check this out (monthly_analysis.xlsx)[https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/year_view_analysis.xlsx] Following lists the purpose of each table. 
 
 #### Descriptive Analysis
 I’ve performed initial analysis using pivot tables for each month separately.
@@ -84,10 +84,10 @@ Some other important observations are:
 3)	Casual riders have higher average ride length than annual member. Almost double of the later.
 4)	Saturdays and Sundays witnessed highest number of rides. Average ride length has also been recorded high for these two days.
 
-#### Year-view Analysis
+#### Year-view Analysis using SQL
 I will use SQL to merge all the monthly data to do an overall year analysis. I will be using Microsoft SQL Server to do all database operations.
 
-All the step-by-step queries can be found here [bikesharecasestudy.sql](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/bikeShareCaseStudy.sql). Be sure to check out [bikeShareCaseStudyReport.docx](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/BikeShareCaseStudy.docx) to view all important figures and outputs.
+All the step-by-step queries can be found here [bikesharecasestudy.sql](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/SQLscript.sql). Be sure to check out [bikeShareCaseStudyReport.docx](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/caseStudyReport.docx) to view all important figures and outputs.
 
 The analysis unraveled some interesting trends amongst the annual members and casual riders. Following is the analysis.
 
@@ -98,32 +98,21 @@ The analysis unraveled some interesting trends amongst the annual members and ca
 5)	Classic bikes are most preferred type amongst both category of riders. Docked bike is the least preferred. Also, casual members opt for classic bike for long rides.
 6)	Casual Members usually prefer weekends over weekdays. Contrary was observed for annual riders, who recorded high numbers on all days, with significant drop on Sunday.
 
+#### Year-view Analysis using R
 
+For analysis using R, I've used data from 4 quarters - Q2, Q3, Q4 from 2019 and Q1 from 2020. The script to clean, merge, analyse and visualise can be found here (R_script.R)[https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/Rscript.R ].
 
+### Share
 
+This phase is to visualise important and relevant information to be shown to the stakeholders.
 
+One of the most striking difference between annual members and casual riders is their pattern of operation over the weekdays.
 
+![alt text](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/images/weeklyRides_bar.png)
+Annual members are active on all weekdays and casual riders are more active on weekends.
 
+One explanation for this behaviour is that working people opt for annual membership which is in contrast too casual riders who only opt to ride on the go during weekend.
 
+### Authors
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Shivani Nadkarni
