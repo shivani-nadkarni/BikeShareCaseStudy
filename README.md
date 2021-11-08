@@ -1,9 +1,9 @@
 # BikeShareCaseStudy
 ## Introduction
-The firm has two major categories of riders: casual riders and annual members. Casual riders are the ones who avail the single-ride passes and full-day passes. Annual members have one-year pass to use the bikes. 
+Cyclistic is a fictional company that offers bike sharing facility. This firm has two major categories of riders: casual riders and annual members. Casual riders are the ones who avail the single-ride passes and full-day passes. Annual members have one-year pass to use the bikes. 
 
 ## Problem Description 
-The business analysts have determined that the Annual members are more profitable to the the company and focus has to be on expanding this userbase. So we need to figure out ways to how we can expand the annual member base. The firm wants to come up with marketing strategies in order to execute this mission.
+The business analysts have determined that the Annual members are more profitable to the the company and focus has to be on expanding this userbase. The firm wants to come up with marketing strategies in order to execute this mission.
 
 ## Project Objective
 This project aims to analyse Bike Rides data for the last one year and to investigate how annual members and casual riders use Cyclistic bikes differently. At the end some suggestions are provided that may encourage casual riders to take up annual membership.
