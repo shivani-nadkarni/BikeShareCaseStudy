@@ -59,7 +59,7 @@ b)	Here numerical value 1 = Sunday and 7 = Saturday
 
 ### Analyse
 
-To Analyse the data, one of the best ways is to use Pivot tables. I created 5 pivot for each month, you can check this out (monthly_analysis.xlsx)[https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/year_view_analysis.xlsx] Following lists the purpose of each table. 
+To Analyse the data, one of the best ways is to use Pivot tables. I created 5 pivot for each month, you can check this out [monthly_analysis.xlsx](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/year_view_analysis.xlsx) Following lists the purpose of each table. 
 
 #### Descriptive Analysis
 I’ve performed initial analysis using pivot tables for each month separately.
@@ -100,7 +100,7 @@ The analysis unraveled some interesting trends amongst the annual members and ca
 
 #### Year-view Analysis using R
 
-For analysis using R, I've used data from 4 quarters - Q2, Q3, Q4 from 2019 and Q1 from 2020. The script to clean, merge, analyse and visualise can be found here (R_script.R)[https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/Rscript.R ].
+For analysis using R, I've used data from 4 quarters - Q2, Q3, Q4 from 2019 and Q1 from 2020. The script to clean, merge, analyse and visualise can be found here [R_script.R](https://github.com/shivani-nadkarni/BikeShareCaseStudy/blob/master/Rscript.R ).
 
 ### Share
 
