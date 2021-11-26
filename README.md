@@ -113,6 +113,6 @@ Annual members are active on all weekdays and casual riders are more active on w
 
 One explanation for this behaviour is that working people opt for annual membership which is in contrast too casual riders who only opt to ride on the go during weekend.
 
-### Authors
+### Author
 
 Shivani Nadkarni
